@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import usePost from "../hooks/usePost";
 import CustomButton from "./Button";
 import "react-toastify/dist/ReactToastify.css";
+import useUserStore from "../store/useUserStore";
 
 type IModal = {
   isOpenModal: boolean;
@@ -24,7 +25,10 @@ function UploadFile({ isOpenModal, onClose }: IModal) {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValuesChat>();
-  const { post, error, loading } = usePost("/chat/create-new/");
+  const { userId } = useUserStore();
+  console.log(userId);
+
+  const { post, error, loading } = usePost(`/chat/create-new/${userId}`);
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormValuesChat> = async (data) => {
@@ -34,16 +38,13 @@ function UploadFile({ isOpenModal, onClose }: IModal) {
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("newChatId", newChatId);
-      
+
     if (data.fileUpload && data.fileUpload.length > 0) {
       formData.append("fileUpload", data.fileUpload[0]);
       console.log(data.fileUpload[0]);
     } else {
-      console.error("No file selected");
       toast.error("no file selected");
     }
-
-    // for (const [key, value] of formData.entries()) console.log(`${key}:`, value);
 
     const result = await post(formData);
 
