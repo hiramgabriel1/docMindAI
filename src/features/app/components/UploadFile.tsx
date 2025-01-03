@@ -4,14 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import usePost from "../hooks/usePost";
-import CustomButton from "./Button";
 import "react-toastify/dist/ReactToastify.css";
 import useUserStore from "../store/useUserStore";
-
-type IModal = {
-	isOpenModal: boolean;
-	onClose: () => void;
-};
 
 export interface FormValuesChat {
 	title: string;
@@ -19,22 +13,30 @@ export interface FormValuesChat {
 	fileUpload: FileList;
 }
 
-function UploadFile({ isOpenModal, onClose }: IModal) {
+interface UploadFileProps {
+	isOpen: boolean;
+	onClose: () => void;
+}
+
+export default function UploadFile({ isOpen, onClose }: UploadFileProps) {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormValuesChat>();
+
 	const { userId } = useUserStore();
 	console.log(userId);
 
 	const { post, error, loading } = usePost(`/chat/create-new/${userId}`);
 	const navigate = useNavigate();
 
+	console.log(error);
+
 	const onSubmit: SubmitHandler<FormValuesChat> = async (data) => {
 		const newChatId = uuidv4();
-
 		const formData = new FormData();
+
 		formData.append("title", data.title);
 		formData.append("description", data.description);
 		formData.append("newChatId", newChatId);
@@ -42,22 +44,22 @@ function UploadFile({ isOpenModal, onClose }: IModal) {
 		if (data.fileUpload && data.fileUpload.length > 0) {
 			formData.append("fileUpload", data.fileUpload[0]);
 			console.log(data.fileUpload[0]);
-		} else {
-			toast.error("no file selected");
 		}
+		toast.error("No file selected");
 
 		const result = await post(formData);
 
 		if (result.success) {
 			toast.success("Chat is created!");
 			navigate(`/new-chat/${newChatId}`);
+			onClose();
 		}
 
-		toast.error(error || "Error al guardar el chat");
+		toast.error("Error creating chat");
 	};
 
 	return (
-		<Dialog.Root open={isOpenModal} onOpenChange={onClose}>
+		<Dialog.Root open={isOpen} onOpenChange={onClose}>
 			<ToastContainer />
 			<Dialog.Content maxWidth="450px">
 				<Dialog.Title>Create a new chat</Dialog.Title>
@@ -116,17 +118,12 @@ function UploadFile({ isOpenModal, onClose }: IModal) {
 						<Button variant="soft" color="gray" onClick={onClose}>
 							Cancel
 						</Button>
-						<CustomButton
-							borderSize=""
-							buttonSize=""
-							text={`${loading ? "saving" : "save"}`}
-							disabled={loading}
-						></CustomButton>
+						<Button type="submit" disabled={loading}>
+							{loading ? "Saving..." : "Save"}
+						</Button>
 					</Flex>
 				</form>
 			</Dialog.Content>
 		</Dialog.Root>
 	);
 }
-
-export default UploadFile;
