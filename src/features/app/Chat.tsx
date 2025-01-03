@@ -1,31 +1,29 @@
-import Navbar from "./components/Navbar"
-import { jwtDecode } from "jwt-decode"
-import { useEffect, useState } from "react"
-import Cookies from "js-cookie"
+import Navbar from "./components/Navbar";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 function Chat() {
-  const [chats, setChats] = useState([])
-  const cookieUser = Cookies.get("authToken")
-  
-  useEffect(()=> {
-    if(cookieUser){
-      const userData = jwtDecode(cookieUser)
-      // @ts-check
-      setChats(userData)
-    }
-      
-  }, [cookieUser])
+	const [chats, setChats] = useState([]);
+	const cookieUser = Cookies.get("authToken");
 
-  useEffect(()=> {
-    console.log('archivo:', chats);
-  }, [chats])
+	useEffect(() => {
+		if (cookieUser) {
+			const userData = jwtDecode(cookieUser);
+			setChats(userData);
+		}
+	}, [cookieUser]);
 
-  return (
-    <>
-        <Navbar />
-        <p>My chats list</p>
-    </>
-  )
+	useEffect(() => {
+		console.log("archivo:", chats);
+	}, [chats]);
+
+	return (
+		<>
+			<Navbar />
+			<p>My chats list</p>
+		</>
+	);
 }
 
-export default Chat
+export default Chat;
