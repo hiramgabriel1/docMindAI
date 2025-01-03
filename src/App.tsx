@@ -10,13 +10,16 @@ import Register from "./features/login/Register";
 function App() {
   return (
     <>
-      <BrowserRouter basename="/app"> 
+      <BrowserRouter basename="/app">
         <Routes>
           <Route path="/starter" element={<Application />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/new-chat/:chatId" element={<Chat />} />
-          <Route path="/view-chat/:chatId" element={<UserChat />} />
+          <Route
+            path="/user/:userId/view-chat/:chatId"
+            element={<UserChat />}
+          />
           <Route path="/my-chats/:userId" element={<MyChats />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

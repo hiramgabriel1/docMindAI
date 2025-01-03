@@ -1,18 +1,29 @@
-import { useParams } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import { jwtDecode } from "jwt-decode"
-// import PdfReader from "./components/PdfReader"
+import { useEffect, useState } from "react"
+import Cookies from "js-cookie"
 
 function Chat() {
-  const { chatId } = useParams()
-  const user = jwtDecode(userData || '')
-
-  console.log(user);
+  const [chats, setChats] = useState([])
+  const cookieUser = Cookies.get("authToken")
   
+  useEffect(()=> {
+    if(cookieUser){
+      const userData = jwtDecode(cookieUser)
+      // @ts-check
+      setChats(userData)
+    }
+      
+  }, [cookieUser])
+
+  useEffect(()=> {
+    console.log('archivo:', chats);
+  }, [chats])
+
   return (
     <>
         <Navbar />
-        <p>{ chatId }</p>
+        <p>My chats list</p>
     </>
   )
 }

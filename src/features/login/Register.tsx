@@ -23,7 +23,7 @@ function Register() {
             console.log(save);
             if (save.success) {
                 toast.success('registrado correctamente')
-                navigate('/starter')
+                navigate('/login')
             }
         } catch (error) {
             console.log(error);
@@ -106,13 +106,8 @@ function Register() {
                         </div>
                         <div className="w-full md:w-full px-3 mb-6">
                             <button className="appearance-none block w-full bg-blue-600 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-blue-500 focus:outline-none focus:bg-white focus:border-gray-500">
-                                Sign in
+                                Register
                             </button>
-                        </div>
-                        <div className="mx-auto -mb-6 pb-1">
-                            <span className="text-center text-xs text-gray-700">
-                                or sign up with
-                            </span>
                         </div>
                         <div className="flex items-center w-full mt-2">
                             <div className="w-full md:w-1/3 px-3 pt-4 mx-2 border-t border-gray-400">

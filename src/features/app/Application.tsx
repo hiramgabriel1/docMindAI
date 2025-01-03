@@ -7,7 +7,7 @@ import useUserStore from "./store/useUserStore";
 import { useEffect } from "react";
 
 export interface CustomJWTPayload extends JwtPayload {
-  userId: string;
+  userId: string | undefined;
 }
 
 function Application() {
