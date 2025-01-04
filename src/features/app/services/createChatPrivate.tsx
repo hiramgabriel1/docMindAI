@@ -1,11 +1,16 @@
 import { customFetch } from "../../../utils/axios.config";
 
+/**
+ * this function is used to create a new chat
+ *
+ * @param chatUUID
+ */
 export const savePrivateChat = async (chatUUID: string) => {
     try {
-        const chatId = await customFetch.post('', chatUUID)
+        await customFetch.post('', chatUUID)
 
-        if(chatId.status === 201) console.log('');
-        
+        // if(chatId.status === 201) console.log('');
+
     } catch (error) {
         console.error(error)
         throw new Error('error al guardar el chat')

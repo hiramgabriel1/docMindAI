@@ -1,19 +1,24 @@
 import { customFetch } from "../../../utils/axios.config";
 
+/**
+ * this function is used to get a specific chat
+ *
+ * @param userId
+ * @param chatId
+ * @returns
+ */
 export const getChatData = async (
-  userId: string | undefined,
-  chatId: string | undefined
+	userId: string | undefined,
+	chatId: string | undefined
 ) => {
-  console.log(userId, chatId);
+	try {
+		const query = await customFetch.get(`/chat/view/${chatId}/user/${userId}`);
 
-  try {
-    const query = await customFetch.get(`/chat/view/${chatId}/user/${userId}`);
+		console.log(query.data);
 
-    console.log(query.data);
-
-    return query.data;
-  } catch (error) {
-    console.log(error);
-    throw new Error("error al consumir data de chat");
-  }
+		return query.data;
+	} catch (error) {
+		console.log(error);
+		throw new Error("error al consumir data de chat");
+	}
 };

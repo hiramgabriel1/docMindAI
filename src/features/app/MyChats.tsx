@@ -12,19 +12,19 @@ function MyChats() {
 		if (data) {
 			const userData = jwtDecode<CustomJWTPayload>(data);
 			if (userData) {
+				// @ts-expect-error ignore
 				setChats(userData);
 			}
 		}
 	}, []);
 
-	useEffect(() => {
-		console.log(chats?.chats);
-	}, [chats]);
 	return (
 		<>
 			<h1 className="text-2xl ml-3 mt-4">list to my chats</h1>
 			<div className="flex items-center justify-center h-screen">
+				{/* @ts-expect-error ignore */}
 				{chats?.chats.length >= 1 ? (
+					// @ts-expect-error ignore
 					<ChatsCards dataChats={chats?.chats} />
 				) : (
 					<h1 className="text-3xl font-semibold">You don't have chats</h1>

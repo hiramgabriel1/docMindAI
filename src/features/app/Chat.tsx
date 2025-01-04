@@ -10,6 +10,7 @@ function Chat() {
 	useEffect(() => {
 		if (cookieUser) {
 			const userData = jwtDecode(cookieUser);
+			// @ts-expect-error ignore
 			setChats(userData);
 		}
 	}, [cookieUser]);
